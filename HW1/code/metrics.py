@@ -65,7 +65,11 @@ def multiclass_accuracy(y_pred, y_true):
     """
     YOUR CODE IS HERE
     """
-    pass
+
+    tp = np.sum(y_true == y_pred)
+    acc = tp / len(y_true)
+    
+    return acc
 
 
 def r_squared(y_pred, y_true):

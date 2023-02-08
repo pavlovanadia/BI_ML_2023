@@ -146,11 +146,13 @@ class KNNClassifier:
            for every test sample
         """
 
-        n_train = distances.shape[0]
+        n_train = distances.shape[1]
         n_test = distances.shape[0]
-        prediction = np.zeros(n_test, np.int)
+        prediction = np.zeros(n_test, dtype=int)
 
-        """
-        YOUR CODE IS HERE
-        """
-        pass
+        for observ in range(n_test):
+            neighbour_classes = self.train_y[distances[observ].argpartition(self.k)[:self.k]]
+            neighbour_counts = np.unique(neighbour_classes, return_counts=True)
+            pred = neighbour_counts[0][np.argmax(neighbour_counts[1])]
+            prediction[observ] = pred
+        return prediction
