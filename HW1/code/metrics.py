@@ -22,34 +22,34 @@ def binary_classification_metrics(y_pred, y_true, beau=False):
     fn = np.sum(np.logical_and(y_pred == 0, y_true == 1))
 
     try:
-        precision = tp / (tp + fp)
+        precision_score = tp / (tp + fp)
     except ZeroDivisionError:
-        precision = None
+        precision_score = None
         print("Precision can not be estimated as far as there are no positive-class predictions.")
     
     try:
-        recall = tp / (tp + fn) # as far as it is binarry classification we should refer to recall as sensitivity
+        recall_score = tp / (tp + fn) # as far as it is binarry classification we should refer to recall as sensitivity
     except ZeroDivisionError:
-        recall = None
+        recall_score = None
         print("Recall can not be estimated as far as there are no positive-class objects in the training set.")
 
     try:
-        f1 = 2 * (precision * recall) / (precision + recall)
+        f1_score = 2 * (precision_score * recall_score) / (precision_score + recall_score)
     except ZeroDivisionError:
-        f1 = None
+        f1_score = None
         print("F1 can not be estimated as far as there are no true positive predictions.")
 
     try:
-        accuracy = (tp + tn) / (tp + tn + fp + fn)
+        accuracy_score = (tp + tn) / (tp + tn + fp + fn)
     except ZeroDivisionError:
-        accuracy = None
+        accuracy_score = None
         print("Accuracy can not be estimated as fas as the arrays are empty.")
     
     if beau:
         separ = '\n'
-        print(f'Precision: {precision}{separ}Recall: {recall}{separ}F1-score: {f1}{separ}Accuracy: {accuracy}')
+        print(f'Precision: {precision_score}{separ}Recall: {recall_score}{separ}F1-score: {f1_score}{separ}Accuracy: {accuracy_score}')
 
-    return precision, recall, f1, accuracy
+    return precision_score, recall_score, f1_score, accuracy_score
 
 
 def multiclass_accuracy(y_pred, y_true):
@@ -85,7 +85,10 @@ def r_squared(y_pred, y_true):
     """
     YOUR CODE IS HERE
     """
-    pass
+    err_pred = np.sum(np.square(y_true - y_pred))
+    err_true = np.sum(np.square(y_true - np.mean(y_true)))
+    r_2 = 1 - err_pred / err_true
+    return r_2
 
 
 def mse(y_pred, y_true):
@@ -101,7 +104,9 @@ def mse(y_pred, y_true):
     """
     YOUR CODE IS HERE
     """
-    pass
+    err_pred = np.sum(np.square(y_true - y_pred))
+    mse = err_pred / y_pred.shape[0]
+    return mse
 
 
 def mae(y_pred, y_true):
@@ -117,5 +122,7 @@ def mae(y_pred, y_true):
     """
     YOUR CODE IS HERE
     """
-    pass
+    err_pred = np.sum(np.abs(y_true - y_pred))
+    mae = err_pred / y_pred.shape[0]
+    return mae
     
